@@ -12,8 +12,8 @@ async function func1() {
     const response = await fetch(apiUrlPlayer)
     const data = await response.json()
     document.getElementById("username").innerHTML = data.response.players[0].personaname
+    document.getElementById("pfp").src = data.response.players[0].avatarfull
 }
-func1()
 async function achievements(gameId, key, userId) {
     const response = await fetch("http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid="+gameId+"&key="+key+"&steamid=" + userId)
     const data = await response.json()
@@ -30,6 +30,10 @@ async function getGameData(gameId1) {
     return data
 }
 async function populateGames(){
+    document.getElementById("mainBox").innerHTML = `
+        <div class="header"> 
+        </div>
+    `
     const response = await fetch(apiUrlGames)
     const data = await response.json()
     games = data.response.games
@@ -43,7 +47,6 @@ async function populateGames(){
             try {
                 achievementsArray = achieveData.playerstats.achievements
                 gameData = await getGameData(games[i].appid)
-                console.log(gameData)
                 let totalAchieve = gameData.achievementpercentages.achievements.length
                 let achievePercentage =  Math.round((achievementsArray.length)/totalAchieve *100)
                 if (achievePercentage == 100) {
@@ -162,5 +165,22 @@ async function populateGames(){
         }
     }
 }
-populateGames()
-
+function main() {
+    func1()
+    populateGames()
+    document.getElementById("pfp").addEventListener("click", function() {
+        // window.open("https://steamcommunity.com/profiles/76561198296334011")
+        document.getElementById("pd").classList.toggle("dropdownActive")
+    })
+    document.getElementById("userIdButton").addEventListener("click", function() {
+        id1 = document.getElementById("userId").value;
+        console.log(id1)
+        console.log(id1.length)
+        console.log(isNaN(id1))
+        if (isNaN(id1) == false && id1.length == 17) {
+            id = id1
+            main()
+        }
+    })
+}
+main()
