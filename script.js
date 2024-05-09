@@ -238,6 +238,7 @@ else {
                     stopAll = true
                 }
             })
+            initialize = false
             document.getElementById("pfp").addEventListener("click", function() {
                 // window.open("https://steamcommunity.com/profiles/76561198296334011")
                 document.getElementById("pd").classList.toggle("dropdownActive")
