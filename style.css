@@ -303,3 +303,67 @@ a {
     background-color: #262636da;
     border: 1px solid #5656788f;
 }
+.pleaseLogIn {
+    color: #b5b5b5ed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    font-family: "Montserrat", sans-serif;
+}
+@keyframes sway {
+    0% {
+        transform: rotate(-5deg);
+    }
+    50% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(-5deg);
+    }
+
+}
+
+.pleaseLogInText {
+    position: relative;
+    animation: sway 5s infinite; /* The animation will take 5 seconds to complete and will run indefinitely */
+}
+
+.userIdInput1 {
+    margin-right:5%;
+    background-color: #21203897;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: #b5b5b5bb;
+    transition: 0.4s;
+    border: 1px solid #4f4e6697;
+    height: 25px;
+}
+.userIdInput1:focus {
+    outline: none;
+    background-color: #2f2e428f;
+    border: 1px solid #5656788f;
+}
+.userIdButton1 {
+    background-color: #21203897;
+    border: none;
+    border-radius: 4px;
+    color: #b5b5b5bb;
+    transition: 0.2s;
+    border: 1px solid #4f4e6697;
+    height: 25px;
+    width: 30px;
+}
+.userIdButton1:hover {
+    background-color: #2f2e428f;
+    border: 1px solid #5656788f;
+    cursor: pointer;
+}
+.userIdButton1:active {
+    transition: 0.1s;
+    background-color: #262636da;
+    border: 1px solid #5656788f;
+}   
