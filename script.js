@@ -10,7 +10,7 @@ async function populateUser() {
     return data.response.players[0]
 }
 async function achievements(gameId, key, userId) {
-    const response = await fetch("http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid="+gameId+"&key="+key+"&steamid=" + userId)
+    const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid="+gameId+"&key="+key+"&steamid=" + userId)
     const data = await response.json()
     if (response.ok){
         return data
@@ -20,7 +20,7 @@ async function achievements(gameId, key, userId) {
     }
 }
 async function getGameData(gameId1) {
-    const response = await fetch("http://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid="+gameId1)
+    const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid="+gameId1)
     const data = await response.json()  
     return data
 }
@@ -167,9 +167,9 @@ async function populateGames(){
 }
 
 async function main() {
-    apiUrlPlayer = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + key + "&steamids=" + id + "&format=json"
-    apiUrlGames = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + key + "&include_played_free_games=1&include_appinfo=1&steamid=" + id + "&format=json"
-    userData = await populateUser()
+    apiUrlPlayer = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + key + "&steamids=" + id + "&format=json"
+    apiUrlGames = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + key + "&include_played_free_games=1&include_appinfo=1&steamid=" + id + "&format=json"
+    userData = await populateUser() 
     console.log(userData)
     document.getElementById("player").innerHTML = `
     <div class="name1" id="username">
