@@ -1,4 +1,4 @@
-var key = "***REMOVED***"
+
 // var id = "76561198296334011"
 var id = null
 stopAll = false
