@@ -3,7 +3,7 @@
 var id = null
 stopAll = false
 var initialize = true
-// http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=***REMOVED***&appid=76561198296334011
+// http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=&appid=76561198296334011
 async function populateUser() {
     const response = await fetch(apiUrlPlayer)
     const data = await response.json()
