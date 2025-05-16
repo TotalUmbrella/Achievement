@@ -29,10 +29,47 @@
             </div>
             <img src="pfp.jpg" alt="pfp" class="pfp" id="pfp">
         </div>
-        <div class="mainBox" id="mainBox">
-            <div class="header"> 
+        <div class="boxBounder">
+            <div class="mainBox" id="mainBox">
+                <div class="header"> 
+                </div>
+                
             </div>
-            
+            <div class="filterContainer" id="filterContainer">
+                <div class="filter" id="filter">
+
+                </div>
+                <div class="filterSettings" id="filterSettings">
+                    <div class="filterSettingsElement">
+                        <input type="checkbox" id="completed" class="checkbox">
+                        <label for="checkbox" class="checkboxLabel">Hide completed games</label>
+                    </div>
+                    <div class="filterSettingsElement">
+                        <input type="checkbox" id="noAchievements" class="checkbox">
+                        <label for="checkbox" class="checkboxLabel">Hide games without achievements</label>
+                    </div>
+                    <!-- <div class="filterSettingsElement">
+                        <input type="checkbox" id="checkbox" class="checkbox">
+                        <label for="checkbox" class="checkboxLabel">Hide games with less than <input type="text" class="grahhh"> hours</label>
+                    </div> -->
+                    <div class="filterSettingsElement">
+                        Sort by: 
+                        <select name="filter" id="filterSelect" class="filterSelect">
+                            <option value="0">Hours</option>
+                            <option value="1">Achievement Percentage</option>
+                            <option value="2">Achievements</option>
+                        </select>
+                        <div class="ascContainer" id="ascContainer">
+                            <div class="asc" id="asc">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filterSave" id="filterSave">
+                        Save
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

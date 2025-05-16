@@ -31,8 +31,8 @@ a {
 
 
 .mainBox {
-    width: clamp(750px, 50vw, 1000px);
-    height: 80%;
+    width: 100%;
+    height: 100%;
     background: #50505019;
     padding: 20px;
     border-radius: 10px;
@@ -43,6 +43,150 @@ a {
     justify-content: flex-start;
     scrollbar-color: #5e5e5e5e #21203891;
     scrollbar-width: thin;
+}
+.boxBounder{
+    width: clamp(750px, 50vw, 1000px);
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+.filterContainer {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #5a5a5a96;
+    background: #50505019;
+    display: flex;
+    border-radius: 5px;
+    margin-left: 5px;
+    align-items: flex-start;
+    justify-content: flex-end;
+    transition: 0.5s;
+    color: #b5b5b5ed;
+}
+.filter {
+    width: 40px;
+    height: 40px;
+    background-image: url(filter.png);
+    background-size: contain;
+    opacity: 0.5;
+    transition: 0.2s;
+}
+.filter:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+.filter:active {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.filterContainerActive {
+    width: 400px;
+    height: 25svh;
+    align-items: flex-end;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    transition: 0.5s;
+    color: #b5b5b5ed;
+}
+.checkbox {
+    background-color: #212038;
+}
+.grahhh {
+    width: 2rem;
+    height: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.ascContainer {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid #5a5a5a96;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+.ascContainer:hover {
+    cursor: pointer;
+    background-color: #2b2b348e;
+}
+.asc {
+    width: 90%;
+    height: 90%;
+    background-image: url(arrow.png);
+    background-size: cover;
+    opacity: 0.5;
+    rotate: 90deg;
+    transition: 0.3s;
+}
+.dsc {
+    width: 90%;
+    height: 90%;
+    background-image: url(arrow.png);
+    background-size: cover;
+    opacity: 0.5;
+    rotate: -90deg;
+    transition: 0.3s;
+}
+.filterSelect {
+    width: 60%;
+    height: 1.5rem;
+    padding-left: 10px;
+    font-size: 0.8em;
+    color: #b5b5b5ed;
+    background-color: #1e1e36;
+    border-radius: 3px;
+    outline: none;
+    transition: 0.2s;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.filterSave {
+    width: 3rem;
+    height: 2rem;
+    border: 1px solid #5a5a5a96;
+    background-color: #212038;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    color: #b5b5b5ed;
+    transition: 0.2s;
+}
+.filterSave:hover {
+    cursor: pointer;
+    background-color: #2f2e42;
+}
+.filterSave:active {
+    cursor: pointer;
+    background-color: #26252c;
+}
+.filterSettingsElement {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 5px;
+}
+.filterSettings{
+    display: none;
+    transition: 0.5s;
+}
+.filterSettingsActive {
+    display: flex;
+    transition: 0.5s;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    flex-grow: 1;
 }
 .game {
     width: 100%;
