@@ -1,15 +1,29 @@
 // var id = "76561198296334011"
+console.log("script.js loaded");
+var key = "127ACE4531C8AD3336B244C0A4AE05CD";
+console.log("script.js loaded1");
 var id = null
+var games = null
 stopAll = false
 var initialize = true
 // http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=&appid=76561198296334011
 async function populateUser() {
-    const response = await fetch(apiUrlPlayer)
+    const response = await fetch("http://localhost:3000/api/player?userId="+id);
     const data = await response.json()
     return data.response.players[0]
 }
-async function achievements(gameId, key, userId) {
-    const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid="+gameId+"&key="+key+"&steamid=" + userId)
+
+async function getGameData(gameId) {
+    const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid="+gameId)
+    const data = await response.json()  
+    console.log("gamedata")
+    console.log(data)
+    return data
+}
+
+
+async function achievements(gameId) {
+    const response = await fetch("http://localhost:3000/api/achievements?gameId="+gameId+"&userId=" + id)
     const data = await response.json()
     if (response.ok){
         return data
@@ -18,55 +32,69 @@ async function achievements(gameId, key, userId) {
         return false
     }
 }
-async function getGameData(gameId1) {
-    const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid="+gameId1)
-    const data = await response.json()  
-    return data
-}
+
+
 async function getGames() {
-    const response = await fetch(apiUrlGames)
+    console.log("getting games")
+    const response = await fetch("http://localhost:3000/api/games?userId="+id);
     const data = await response.json()
+    console.log(data)
     games = data.response.games
+    console.log(games)
     gamesList = []
     console.log(games)
     console.log(response)
-    console.log(data)
     for (let i = 0; i < games.length; i++) {
         game = {}
         game["appid"] = games[i].appid
         game["name"] = games[i].name
         game["img_icon_url"] = games[i].img_icon_url
         game["time"] = games[i].playtime_forever/60
-        let achieveData = await achievements(games[i].appid, key, id)
+        console.log("1")
+        let achieveData = await achievements(games[i].appid)
+        console.log("3") 
         try {
             if (achieveData == false) {   
-                hasAchievements = false
                 game["achievePercentage"] = 0
                 game["achieveNumber"] = 0
                 game["totalAchieve"] = 0
+                game["hasAchievements"] = false
                 gamesList.push(game)                
                 continue
             }
-            else {
+            else {  
                 let gameData = await getGameData(games[i].appid)
                 let achievementsArray = achieveData.playerstats.achievements
                 let totalAchieve = gameData.achievementpercentages.achievements.length
                 game["totalAchieve"] = totalAchieve
                 game["achievePercentage"] =  Math.round((achievementsArray.length)/totalAchieve *100)
                 game["achieveNumber"] = achievementsArray.length
+                game["hasAchievements"] = true
+                gamesList.push(game)    
             }
         }
         catch (error) {
+            console.log("error:" + i)
             let gameData = await getGameData(games[i].appid)
-            let totalAchieve = gameData.achievementpercentages.achievements.length
-            game["totalAchieve"] = totalAchieve
-            game["achievePercentage"] = 0
-            game["achieveNumber"] = 0
+            if (Object.keys(gameData).length == 0) {
+                game["achievePercentage"] = 0
+                game["achieveNumber"] = 0
+                game["totalAchieve"] = 0
+                game["hasAchievements"] = false
+                gamesList.push(game)                
+            }
+            else {
+                let totalAchieve = gameData.achievementpercentages.achievements.length
+                game["totalAchieve"] = totalAchieve
+                game["achievePercentage"] = 0
+                game["achieveNumber"] = 0
+                game["hasAchievements"] = true
+                gamesList.push(game)
+            }
         }
-        hasAchievements = true
-        game["hasAchievements"] = hasAchievements
-        gamesList.push(game)
     }
+    console.log("logging    ")
+    console.log(gamesList)
     return gamesList;
 }
 async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
@@ -115,6 +143,7 @@ async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
     for (let i = 0; i < gamesList.length; i++) {
         let game = document.createElement("div")
         time = Math.round(gamesList[i].time, 1)
+        console.log(gamesList[i])
         if (gamesList[i].hasAchievements) {
                 let totalAchieve = gamesList[i].totalAchieve
                 let achieveNumber = gamesList[i].achieveNumber
@@ -236,18 +265,15 @@ if (sortingDirectionGlobal == null) {
 }
 stupidFlag = 0
 function main() {
-    apiUrlPlayer = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + key + "&steamids=" + id + "&format=json"
-    apiUrlGames = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + key + "&include_played_free_games=1&include_appinfo=1&steamid=" + id + "&format=json"
+ 
+    console.log("Program running");
 
-    func1()
     populateGames(sortingMethodGlobal, hideCompletedGlobal, hideNoAchievementsGlobal)
     document.getElementById("pfp").addEventListener("click", function() {
-        // window.open("https://steamcommunity.com/profiles/76561198296334011")
         document.getElementById("pd").classList.toggle("dropdownActive")
         console.log("clickedpfp")
     })
     document.getElementById("ascContainer").addEventListener("click", function() {
-        // window.open("https://steamcommunity.com/profiles/76561198296334011")
         document.getElementById("asc").classList.toggle("dsc")
         stupidFlag++
         // if stupidFlag is odd, then it is ascending
@@ -310,3 +336,4 @@ function main() {
         }
     })
 }
+main();
