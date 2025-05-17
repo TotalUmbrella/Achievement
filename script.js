@@ -3,21 +3,20 @@ console.log("script.js loaded");
 var key = "127ACE4531C8AD3336B244C0A4AE05CD";
 console.log("script.js loaded1");
 var id = null
-var games = null
 stopAll = false
 var initialize = true
 // http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=&appid=76561198296334011
 async function populateUser() {
     const response = await fetch("http://localhost:3000/api/player?userId="+id);
     const data = await response.json()
-    return data.response.players[0]
+    console.log(data)
+    pfpReal = document.getElementById("pfp");
+    pfpReal.src = data.response.players[0].avatarmedium;
 }
 
 async function getGameData(gameId) {
     const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid="+gameId)
     const data = await response.json()  
-    console.log("gamedata")
-    console.log(data)
     return data
 }
 
@@ -38,12 +37,11 @@ async function getGames() {
     console.log("getting games")
     const response = await fetch("http://localhost:3000/api/games?userId="+id);
     const data = await response.json()
-    console.log(data)
+
     games = data.response.games
-    console.log(games)
+
     gamesList = []
-    console.log(games)
-    console.log(response)
+
     for (let i = 0; i < games.length; i++) {
         game = {}
         game["appid"] = games[i].appid
@@ -93,8 +91,7 @@ async function getGames() {
             }
         }
     }
-    console.log("logging    ")
-    console.log(gamesList)
+
     return gamesList;
 }
 async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
@@ -103,12 +100,13 @@ async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
         </div>
     `
     let gamesList = localStorage.getItem("games")
-    console.log(gamesList)
+
     if (gamesList === null) {   
         gamesList = await getGames()
         localStorage.setItem("games", JSON.stringify(gamesList))
     } else {
         gamesList = JSON.parse(gamesList); // Parse the JSON string to an object
+        games = gamesList;
     }
     if (sortingDirectionGlobal == "dsc") {
         switch (sortingMethod) {
@@ -143,7 +141,6 @@ async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
     for (let i = 0; i < gamesList.length; i++) {
         let game = document.createElement("div")
         time = Math.round(gamesList[i].time, 1)
-        console.log(gamesList[i])
         if (gamesList[i].hasAchievements) {
                 let totalAchieve = gamesList[i].totalAchieve
                 let achieveNumber = gamesList[i].achieveNumber
@@ -212,7 +209,7 @@ async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
             game.innerHTML = `
             <div class="game">
                 <div class="left">
-                    <img class="img" src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${games[i].appid}/${games[i].img_icon_url}.jpg" alt="">
+                    <img class="img" src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${gamesList[i].appid}/${gamesList[i].img_icon_url}.jpg" alt="">
                     <div class ="name">
                         ${gamesList[i].name}
                     </div>
@@ -265,8 +262,11 @@ if (sortingDirectionGlobal == null) {
 }
 stupidFlag = 0
 function main() {
- 
     console.log("Program running");
+    id = localStorage.getItem("userId")
+    console.log(id)
+    populateUser();
+
 
     populateGames(sortingMethodGlobal, hideCompletedGlobal, hideNoAchievementsGlobal)
     document.getElementById("pfp").addEventListener("click", function() {
@@ -323,17 +323,19 @@ function main() {
                 console.log("ran")
                 if (isNaN(id1) == false && id1.length == 17) {
                     id = id1
-                    main()
+                    localStorage.setItem("userId", id);
+                    populateGames(sortingMethodGlobal, hideCompletedGlobal, hideNoAchievementsGlobal)
                     stopAll = true
                 }
             })
             initialize = false
             document.getElementById("pfp").addEventListener("click", function() {
-                // window.open("https://steamcommunity.com/profiles/76561198296334011")
                 document.getElementById("pd").classList.toggle("dropdownActive")
             })
             stopAll = true
         }
+        console.log(id1)
+        console.log(id)
     })
 }
 main();

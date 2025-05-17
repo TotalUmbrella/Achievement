@@ -31,6 +31,7 @@ app.get('/api/games', async (req, res)=>{
     const data = await response.json();
     res.json(data);
 })
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
