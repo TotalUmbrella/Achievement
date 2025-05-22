@@ -7,7 +7,7 @@ stopAll = false
 var initialize = true
 // http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key=&appid=76561198296334011
 async function populateUser() {
-    const response = await fetch("http://localhost:3000/api/player?userId="+id);
+    const response = await fetch("https://achievement-hbn5.onrender.com/api/player?userId="+id);
     const data = await response.json()
     console.log(data)
     pfpReal = document.getElementById("pfp");
@@ -22,7 +22,7 @@ async function getGameData(gameId) {
 
 
 async function achievements(gameId) {
-    const response = await fetch("http://localhost:3000/api/achievements?gameId="+gameId+"&userId=" + id)
+    const response = await fetch("https://achievement-hbn5.onrender.com/api/achievements?gameId="+gameId+"&userId=" + id)
     const data = await response.json()
     if (response.ok){
         return data
@@ -35,14 +35,23 @@ async function achievements(gameId) {
 
 async function getGames() {
     console.log("getting games")
-    const response = await fetch("http://localhost:3000/api/games?userId="+id);
+    const response = await fetch("https://achievement-hbn5.onrender.com/api/games?userId="+id);
     const data = await response.json()
 
     games = data.response.games
-
+    console.log("games gotten")
     gamesList = []
 
+    document.getElementById("mainBox").innerHTML = `
+        <div class="loading" id="loading"> 
+            <div class="loadingBar">
+            Loading... <---------->
+            </div>
+        </div>
+    `
+
     for (let i = 0; i < games.length; i++) {
+        saturateLoadingBar(i, games.length)
         game = {}
         game["appid"] = games[i].appid
         game["name"] = games[i].name
@@ -94,11 +103,42 @@ async function getGames() {
 
     return gamesList;
 }
-async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
-    document.getElementById("mainBox").innerHTML = `
-        <div class="header"> 
+
+arbitrary = 0
+
+function saturateLoadingBar(index, total) {
+    proportion = Math.floor((index/total)*10)
+    percent = Math.floor((index/total)*100)
+    console.log(total > 80)
+    arbitrary++
+    if (arbitrary > 3)
+    {
+        arbitrary = 0
+    }
+    if (total > 80)
+    {
+        document.getElementById("loading").innerHTML = `
+        <div class="loadingBar">
+        Loading... [${("#").repeat(proportion)}${("-".repeat(10-proportion))}] ${percent}%
+        </br>
+        </br>
+        this may take a few minutes...
         </div>
+    
     `
+    }
+    else {
+        document.getElementById("loading").innerHTML = `
+            <div class="loadingBar">
+            Loading... <${("█").repeat(proportion)}${("▒".repeat(10-proportion))}>
+            </div>
+        `
+    }
+
+}
+
+async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
+
     let gamesList = localStorage.getItem("games")
 
     if (gamesList === null) {   
@@ -137,6 +177,11 @@ async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
     console.log(sortingMethod)
     console.log(sortingDirectionGlobal)
     console.log(gamesList)
+
+    document.getElementById("mainBox").innerHTML = `
+        <div class="header"> 
+        </div>
+    `
 
     for (let i = 0; i < gamesList.length; i++) {
         let game = document.createElement("div")
@@ -236,6 +281,7 @@ async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
             continue
         }
         document.getElementById("mainBox").append(game)
+        console.log("appended")
     }
 }
 flag = false
@@ -261,6 +307,11 @@ if (sortingDirectionGlobal == null) {
     localStorage.setItem("sortingDirection", sortingDirectionGlobal)
 }
 stupidFlag = 0
+
+function updateProgress() {
+    return
+}
+
 function main() {
     console.log("Program running");
     id = localStorage.getItem("userId")
