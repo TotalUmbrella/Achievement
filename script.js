@@ -368,21 +368,8 @@ function main() {
         console.log(isNaN(id1))
         if (isNaN(id1) == false && id1.length == 17) {
             id = id1
-            main()
-            document.getElementById("userIdButton").addEventListener("click", function() {
-                id1 = document.getElementById("userId").value;
-                console.log("ran")
-                if (isNaN(id1) == false && id1.length == 17) {
-                    id = id1
-                    localStorage.setItem("userId", id);
-                    populateGames(sortingMethodGlobal, hideCompletedGlobal, hideNoAchievementsGlobal)
-                    stopAll = true
-                }
-            })
-            initialize = false
-            document.getElementById("pfp").addEventListener("click", function() {
-                document.getElementById("pd").classList.toggle("dropdownActive")
-            })
+            localStorage.setItem("userId", id);
+            populateGames(sortingMethodGlobal, hideCompletedGlobal, hideNoAchievementsGlobal)
             stopAll = true
         }
         console.log(id1)
