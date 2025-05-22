@@ -28,10 +28,11 @@ app.get('/api/player', async (req, res)=>{
 app.get('/api/games', async (req, res)=>{
     const userId = req.query.userId;
     const response = await fetch("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + key + "&include_played_free_games=1&include_appinfo=1&steamid=" + userId + "&format=json")
+    console.log(response)
     const data = await response.json();
     res.json(data);
 })
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
-});
+})
