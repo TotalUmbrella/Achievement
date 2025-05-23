@@ -33,6 +33,14 @@ app.get('/api/games', async (req, res)=>{
     res.json(data);
 })
 
+app.get('/api/gamedata', async (req, res)=>{
+    const gameId = req.query.gameId;
+    const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid="+gameId)
+    const data = await response.json();
+    res.json(data);
+})
+
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 })

@@ -15,7 +15,7 @@ async function populateUser() {
 }
 
 async function getGameData(gameId) {
-    const response = await fetch("https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid="+gameId)
+    const response = await fetch("https://achievement-hbn5.onrender.com/api/gamedata?gameId="+gameId)
     const data = await response.json()  
     return data
 }
