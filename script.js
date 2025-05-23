@@ -145,7 +145,7 @@ async function populateGames(sortingMethod, hideCompleted, hideNoAchievements) {
         gamesList = await getGames()
         localStorage.setItem("games", JSON.stringify(gamesList))
     } else {
-        gamesList = JSON.parse(gamesList); // Parse the JSON string to an object
+        gamesList = JSON.parse(gamesList);
         games = gamesList;
     }
     if (sortingDirectionGlobal == "dsc") {
